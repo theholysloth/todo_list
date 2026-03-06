@@ -1,6 +1,10 @@
 <template>
-    <div class="counter">
-        Total des Taches {{tasks.length}}
+    <div class="card " style="width: 13.75em; background-color: bisque;">
+        <div class="card-body">
+            <h5 class="card-header">Total des Taches</h5>
+            <p class="card-text">{{tasks.length}}</p>
+        </div>
+         
     </div>
 </template>
 

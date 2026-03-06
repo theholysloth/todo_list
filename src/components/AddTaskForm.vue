@@ -1,21 +1,28 @@
 <template>
-    <div id="add">
-        
-        <p>
-        <label >Chargé de tache : </label>
-        <input id= "fill_name" v-model="addNom" type="text" placeholder="chargé de la tache"/>
-      </p>
-      <p>
-        <label >tache : </label>
-        <input id= "fill_task" v-model="addTask" type="text" />
-      </p>
-      <p>
-        <label >date de rendu : </label>
-        <input id= "fill_date" v-model="addDate" type="date" />
-      </p>
-      <button v-on:click="submit">Ajouter</button>
+    <div id="add" class="card mt-3">
+       <div class="card-body">
+            <p>
+                <label >Chargé de tache : </label>
+                <input id= "fill_name" v-model="addNom" type="text" placeholder="chargé de la tache"/>
+            </p>
+            <p>
+                <label >tache : </label>
+                <input id= "fill_task" v-model="addTask" type="text" />
+            </p>
+            <p>
+                <label >date de rendu : </label>
+                <input id= "fill_date" v-model="addDate" type="date" />
+            </p>
+        </div> 
+        <div class="mb-3">
+            <button v-on:click="submit">Ajouter</button>
+        </div>
     </div>
 </template>
+
+
+
+
 
 <script>
     export default {

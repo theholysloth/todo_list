@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="d-inline-flex focus-ring py-1 px-2 text-decoration-none border rounded-2">
     <input
       type="text"
       v-model="localSearch"

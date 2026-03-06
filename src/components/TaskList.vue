@@ -1,4 +1,5 @@
 <template>
+    <div class="table-responsive" >
     <table class="table">
         <thead class="table-light">
             <tr>
@@ -14,6 +15,7 @@
             <task-item v-for="(t, i) in filteredTasks" :key="i" :task="t" :index="i" @delete-task="$emit('delete-task', i)" @edit-task="$emit('edit-task', i)" @toggle-done="$emit('toggle-done', i)"/>
         </tbody>
     </table>
+    </div>
 </template>
 
 <script>
@@ -38,3 +40,15 @@ import TaskItem from './TaskItem.vue';
     }
     
 </script>
+
+<style>
+
+.table-responsive{
+    max-height: 500px;
+    overflow-y: auto;
+}
+.table{
+    border-radius: 10%;
+}
+
+</style>

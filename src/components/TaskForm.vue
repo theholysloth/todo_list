@@ -1,43 +1,53 @@
 <template>
-  <div class="container text-center" id="task-form">
-    <div class ="row justify-content-md-center">
-      <div class="col col-lg-2"><label>Chargé de tâche :</label></div>
-      <div class="col-md-auto"><input v-model="localNom" type="text" placeholder="chargé de la tâche" /></div>
-    </div>
+  <div class="card mt-3">
+    <div class="card-body">
+      <div class="container text-center" id="task-form">
+        <div class ="row justify-content-md-center">
+          <div class="col col-lg-2"><label>Chargé de tâche </label></div>
+          <div class="col-md-auto"><input v-model="localNom" type="text" placeholder="chargé de la tâche" /></div>
+        </div>
 
-    <div class="row justify-content-md-center">
-      <div class="col col-lg-2"><label>Tâche :</label></div>
-      <div class="col-md-auto"><input v-model="localTask" type="text" /></div>
-    </div>
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2"><label>Tâche </label></div>
+          <div class="col-md-auto"><input v-model="localTask" type="text" /></div>
+        </div>
 
-    <div class="row justify-content-md-center">
-      <div class="col col-lg-2"><label>Date de rendu :</label></div>
-      <div class="col-md-auto"><input v-model="localDate" type="date" /></div>
+        <div class="row justify-content-md-center">
+          <div class="col col-lg-2"><label>Date de rendu </label></div>
+          <div class="col-md-auto"><input v-model="localDate" type="date" /></div>
+        </div>
+      </div>
     </div>
-
-    <button @click="submit">
-      {{ mode === 'add' ? 'Ajouter' : 'Modifier' }}
-    </button>
+      <button class="btn btn-primary add-update" @click="submit">
+        {{ mode === 'add' ? 'Ajouter' : 'Modifier' }}
+      </button>
+    
   </div>
 </template>
+
+
+
+
 
 <script>
 export default {
   name: "TaskForm",
 
   props: {
-    mode: { type: String, required: true }, // "add" ou "edit"
-    initialNom: String,
-    initialTask: String,
-    initialDate: String,
-    index: Number
+    mode: { type: String, default: 'add' },
+    index: Number,
+    // Propriétés envoyées par le router lors de l'edit
+    nom: String, 
+    task: String,
+    date: String
   },
 
   data() {
     return {
-      localNom: this.initialNom || "",
-      localTask: this.initialTask || "",
-      localDate: this.initialDate || ""
+    // On initialise avec les props si elles existent
+    localNom: this.nom || "",
+    localTask: this.task || "",
+    localDate: this.date || ""
     };
   },
 
@@ -70,3 +80,14 @@ export default {
   }
 };
 </script>
+
+<style>
+.mt-3 {
+    margin-top: 1rem !important;
+    width: 75%;
+    margin-left: 15%;
+    margin-right: 15%;
+    background-color: #d7d7c5;
+}
+</style>
+
