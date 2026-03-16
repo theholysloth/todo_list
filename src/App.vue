@@ -1,35 +1,33 @@
 
-
 <template>
   <div id="app">
     <nav class="nav justify-content-center mb-4 menu-wrapper">
-  <router-link 
-    to="/" 
-    class="nav-link"
-    exact>
-    Tâches
-  </router-link>
-  
-  <router-link 
-    to="/add" 
-    class="nav-link"
-    exact>
-    Ajouter une Tâche
-  </router-link>
+      <router-link 
+        to="/" 
+        class="nav-link"
+        exact>
+        Tâches
+      </router-link>
+      
+      <router-link 
+        to="/add" 
+        class="nav-link"
+        exact>
+        Ajouter une Tâche
+      </router-link>
 
-  <router-link 
-    to="/config" 
-    class="nav-link">
-    Configuration
-  </router-link>
-</nav>
+    </nav>
 
-
-<search-bar   v-if="$route.path === '/'" @search="search = $event" />
-
+    <search-bar v-if="$route.path === '/'" @search="search = $event" />
     
+    <div class="btn-group mb-3" v-if="$route.path === '/'">
+      <button class="btn btn-primary" @click="filter = 'all'">Toutes</button>
+      <button class="btn btn-success" @click="filter = 'done'">Terminées</button>
+      <button class="btn btn-warning" @click="filter = 'todo'">Restantes</button>
+    </div>
     <router-view 
       @toggle-done="toggleDone"
+      :filter="filter"
       :tasks="tasks"
       :search="search"
       @add-task="addTaskFromChild"
@@ -41,42 +39,58 @@
   </div>
 </template>
 
-<script>
-import SearchBar from './components/SearchBar.vue';
+<script setup>
+  import SearchBar from './components/SearchBar.vue'
+  import {ref} from 'vue'
+  import {useRouter, useRoute} from 'vue-router'
+  const router = useRouter()
+  const route = useRoute()
 
-export default {
-  components:{SearchBar},
-  data() {
-    return { tasks: [], search:"" }
-  },
-  methods: {
-    toggleDone(index) {
-      this.tasks[index].done = !this.tasks[index].done;
-    },
-    addTaskFromChild(task) {
-      this.tasks.push({ ...task, done: false });
-      this.$router.push('/'); // Redirige vers la liste après ajout
-    },
-    updateTaskFromChild(updated) {
-      this.$set(this.tasks, updated.index, { ...updated });
-      this.$router.push('/');
-    },
-    deleteTask(index) {
-      this.tasks.splice(index, 1);
-    },
-    goToEditPage(index) {
-      // On redirige vers la page d'édition en passant les infos de la tâche
-      const task = this.tasks[index];
-      this.$router.push({ 
-        name: 'task-edit', 
-        params: { index: index, taskData: task } 
-      });
+  const tasks = ref([])
+  const search = ref('')
+  const filter = ref('all')
+
+  function toggleDone(id) {
+    const index = tasks.value.findIndex(t => t.id === id)
+    if (index !== -1) {
+      tasks.value[index].done = !tasks.value[index].done
     }
   }
-}
+
+
+  function addTaskFromChild(task) {
+      tasks.value.push({ ...task, 
+        id: Date.now(),
+        done: false });
+      router.push('/'); // Redirige vers la liste après ajout
+    }
+
+  function updateTaskFromChild(updated) {
+    const index = tasks.value.findIndex(t => t.id === updated.id)
+    tasks.value[index] = {...updated}
+    router.push('/');
+    }
+
+  function deleteTask(id) {
+    const index = tasks.value.find(t => t.id === id)
+    tasks.value.splice(index, 1);
+    }
+
+  function goToEditPage(id) {
+      // On redirige vers la page d'édition en passant les infos de la tâche
+      const task = tasks.value.find(t => t.id === id)
+      router.push({ 
+        name: 'task-edit', 
+        params: { id:task.id, taskData: task } 
+      });
+    }
+
+
 </script>
 
-<style>
+<style scoped>
+
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -137,11 +151,10 @@ body{
   font-weight: 700;
 }
 
+.btn-group{
+  position: absolute;
+  top: 190px; /* Distance du bas */
+  right: 20px;  /* Distance de la droite */
 
+}
 </style>
-
-
-
-
-
-
